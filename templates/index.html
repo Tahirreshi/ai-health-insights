@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Medical Report Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        .result-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .ai {
+            color: #006600;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🧠 Smart Medical Report Analyzer & Health Advisor</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        <label for="file">Upload CSV or Image (JPG/PNG/BMP):</label><br><br>
+        <input type="file" name="file" id="file" required>
+        <br><br>
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if error %}
+        <div class="result-box error">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    {% if result %}
+        <div class="result-box">
+            <h3>📊 Extracted Data & Insights:</h3>
+            <p>{{ result|safe }}</p>
+        </div>
+    {% endif %}
+
+    {% if ai %}
+        <div class="result-box ai">
+            <h3>🧠 AI Health Advice:</h3>
+            <p>{{ ai|safe }}</p>
+        </div>
+    {% endif %}
+
+</body>
+</html>
