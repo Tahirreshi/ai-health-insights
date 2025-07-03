@@ -1,33 +1,36 @@
+import requests
 import os
-from groq import Groq
-from dotenv import load_dotenv
-load_dotenv()
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+import pandas as pd 
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")  
 
 
-def get_health_advice(input_data):
-    try:
-        if not isinstance(input_data, str):
-            input_data = input_data.to_string()
+def get_health_advice(data):
+    if isinstance(data, str):
+        prompt = f"This is a medical report text:\n{data}\n\nPlease analyze this and give health advice in simple language."
+    elif isinstance(data, pd.DataFrame):
+        prompt = f"Given this health data table:\n{data.head().to_string()}\n\nWhat can you infer? Provide health advice in simple terms."
+    else:
+        return "Unsupported data format for health advice."
 
-        messages = [
-            {
-                "role": "system",
-                "content": "You are a professional health advisor. Analyze the following patient report and provide helpful insights."
-            },
-            {
-                "role": "user",
-                "content": input_data
-            }
+    return get_groq_response(prompt)
+
+def get_groq_response(prompt, model="llama3-70b-8192"):
+    url = "https://api.groq.com/openai/v1/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {GROQ_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": "You are a medical expert AI assistant."},
+            {"role": "user", "content": prompt}
         ]
+    }
 
-        response = client.chat.completions.create(
-            model="llama3-70b-8192",
-            messages=messages,
-            temperature=0.7
-        )
+    response = requests.post(url, headers=headers, json=payload)
 
-        return response.choices[0].message.content
-
-    except Exception as e:
-        return f"AI request failed: {str(e)}"
+    if response.status_code == 200:
+        return response.json()['choices'][0]['message']['content'].strip()
+    else:
+        return f"Error from Groq API: {response.status_code} - {response.text}"
