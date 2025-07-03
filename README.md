@@ -2,7 +2,6 @@
 
 A powerful Flask-based web application that helps users analyze their medical reports (CSV or image format) and receive personalized health advice using AI via the Groq API.
 
----
 
 ## 🚀 Features
 
