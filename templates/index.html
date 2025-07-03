@@ -2,65 +2,175 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Smart Medical Report Analyzer</title>
+    <title>Smart Health Advisor</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f5f5f5;
-        }
-        h1 {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(120deg, #f0f4f8, #e8f0ff);
             color: #333;
         }
-        form {
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            padding-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            padding: 30px;
             margin-bottom: 30px;
         }
-        .result-box {
-            background: #fff;
-            padding: 20px;
+
+        .section h2 {
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input[type="file"],
+        input[type="text"] {
+            padding: 12px;
+            border: 1px solid #ccc;
             border-radius: 8px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            font-size: 1em;
         }
+
+        button {
+            padding: 12px;
+            font-size: 1em;
+            background: #2ecc71;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #27ae60;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-left: 6px solid #3498db;
+            border-radius: 8px;
+        }
+
         .error {
-            color: red;
-            font-weight: bold;
+            border-left-color: #e74c3c;
+            color: #c0392b;
+            background-color: #fdecea;
         }
+
         .ai {
-            color: #006600;
+            border-left-color: #2ecc71;
+            color: #2c662d;
+            background-color: #e8f8f5;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        @media (max-width: 600px) {
+            input[type="text"],
+            input[type="file"],
+            button {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>🧠 Smart Health Advisor</h1>
+            <p>Upload reports or check symptoms — get AI-powered insights instantly.</p>
+        </header>
 
-    <h1>🧠 Smart Medical Report Analyzer & Health Advisor</h1>
-
-    <form method="POST" enctype="multipart/form-data">
-        <label for="file">Upload CSV or Image (JPG/PNG/BMP):</label><br><br>
-        <input type="file" name="file" id="file" required>
-        <br><br>
-        <button type="submit">Analyze</button>
-    </form>
-
-    {% if error %}
-        <div class="result-box error">
-            {{ error }}
+        <div class="section">
+            <h2>📁 Upload Medical Report</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="file" name="file" required>
+                    <button type="submit">Analyze Report</button>
+                </div>
+            </form>
         </div>
-    {% endif %}
 
-    {% if result %}
-        <div class="result-box">
-            <h3>📊 Extracted Data & Insights:</h3>
-            <p>{{ result|safe }}</p>
+        <div class="section">
+            <h2>🤒 Symptom Checker</h2>
+            <form action="/symptom-check" method="post">
+                <div class="form-group">
+                    <input type="text" name="symptoms" placeholder="e.g. fever, cough, headache" required>
+                    <button type="submit">Check Symptoms</button>
+                </div>
+            </form>
         </div>
-    {% endif %}
 
-    {% if ai %}
-        <div class="result-box ai">
-            <h3>🧠 AI Health Advice:</h3>
-            <p>{{ ai|safe }}</p>
-        </div>
-    {% endif %}
+        {% if error %}
+            <div class="result-box error">
+                <h3>⚠️ Error</h3>
+                <p>{{ error|safe }}</p>
+            </div>
+        {% endif %}
 
+        {% if result %}
+            <div class="result-box">
+                <h3>📊 Extracted Report:</h3>
+                <div>{{ result|safe }}</div>
+            </div>
+        {% endif %}
+
+        {% if ai %}
+            <div class="result-box ai">
+                <h3>🧠 AI Health Insight:</h3>
+                <div>{{ ai|safe }}</div>
+            </div>
+        {% endif %}
+        {% if error and form_type == "symptom" %}
+    <div class="result-box error">
+        <h3>⚠️ Error</h3>
+        <p>{{ error|safe }}</p>
+    </div>
+{% endif %}
+
+    </div>
 </body>
 </html>
