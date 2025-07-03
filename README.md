@@ -25,8 +25,3 @@ A powerful Flask-based web application that helps users analyze their medical re
 - **Tesseract OCR (pytesseract)** – Extract text from medical report images
 - **Groq API** – For AI-generated medical advice
 - **dotenv** – For API key management
-
----
-
-## 📂 Project Structure
-
