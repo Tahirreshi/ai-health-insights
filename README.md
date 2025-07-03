@@ -8,7 +8,10 @@ A powerful Flask-based web application that helps users analyze their medical re
 
 - 📁 Upload CSV health data or image reports (like blood test screenshots).
 - 🔍 OCR-powered extraction of medical data from images.
+-  🩺 Check symptoms for possible health conditions  
 - 📊 Automatic detection of key health indicators (e.g., cholesterol, hemoglobin).
+- **Symptom Checker**  
+  Enter symptoms (e.g. `fever, cough, headache`) and get a list of possible conditions using a built-in database.
 - 🧠 Personalized AI-powered health suggestions using Groq API.
 - 🧼 Clean and minimal web interface built with Flask.
 
